@@ -3,10 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MoodProgram"
+        xmlns:vm="clr-namespace:MoodProgram.ViewModel"
+        xmlns:conv="clr-namespace:MoodProgram.Converters"
         mc:Ignorable="d"
-        Title="MainWindow"  Width="450" Height="600" Background="LightGray">
-
+        Title="MainWindow"  Width="450" Height="600" Background="{Binding CurrentMouth.ExpressionColor}">
+    <Window.Resources>
+        <conv:PathFigureToCollectionConverter x:Key="PathFigureToCollectionConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MouthViewModel/>
+    </Window.DataContext>
 
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
         <Grid.RowDefinitions>
@@ -14,16 +20,26 @@
             <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Grid Background="LightGreen" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid Background="{Binding CurrentMouth.ExpressionColor}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Label Content="{Binding Value}"></Label>
                 <Canvas x:Name="FaceCanvas" Width="200" Height="200" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Ellipse Width="40" Height="40" Fill="Black" Canvas.Left="59" Canvas.Top="63"/>
-                    <Ellipse Width="40" Height="40" Fill="Black" Canvas.Left="136" Canvas.Top="63" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Ellipse Width="40" Height="40" Fill="Black" Canvas.Left="27" Canvas.Top="60"/>
+                    <Ellipse Width="40" Height="40" Fill="Black" Canvas.Left="100" Canvas.Top="60" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <!--<Path Data="M 20 70 Q 50 100 80 70" Stroke="Black" StrokeThickness="3" Canvas.Left="59" Canvas.Top="39" HorizontalAlignment="Center" VerticalAlignment="Top"/> -->
-                    <Path x:Name="Mouth" Stroke="Black" StrokeThickness="5"/>
+                    <Path Stroke="Black" StrokeThickness="3">
+                        <Path.Data>
+                            <PathGeometry Figures="{Binding CurrentMouth.MouthFigure, Converter={StaticResource PathFigureToCollectionConverter}}"/>
+                        </Path.Data>
+                    </Path>
                 </Canvas>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" Background="White">
+        <Grid Grid.Row="1" Background="{Binding CurrentMouth.ExpressionColor}">
+            <Label Content="{Binding MoodDescription}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Margin="10"
+                   FontSize="20"/>
             <Slider  x:Name="ExpressionSlider"
                      Margin="30" 
                      VerticalAlignment="Center" 
