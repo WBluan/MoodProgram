@@ -25,11 +25,36 @@ namespace MoodProgram.ViewModel
                 OnPropertyChanged();
             }
         }
-
+        private double _value;
+        public double Value 
+        {
+            get => _value;
+            set
+            {
+                if(_value != value)
+                {
+                    _value = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(MoodDescription));
+                    UpdateExpression(value);
+                }
+            }
+        }
         public Mouth HappyExpression { get; private set; }
         public Mouth NeutralExpression { get; private set; }
         public Mouth SadExpression { get; private set; }
-
+        public string MoodDescription 
+        {
+            get
+            {
+                if (Value <= 0.33)
+                    return "SAD";
+                else if (Value > 0.33 && Value < 0.66)
+                    return "NEUTRAL";
+                else
+                    return "HAPPY";
+            }
+        }
         public MouthViewModel()
         {
             InitializeExpressions();
@@ -42,10 +67,10 @@ namespace MoodProgram.ViewModel
             (
                 new PathFigure
                 {
-                    StartPoint = new Point(80, 140),
+                    StartPoint = new Point(50, 140),
                     Segments = new PathSegmentCollection
                     {
-                        new QuadraticBezierSegment(new Point(135, 170), new Point(190, 135), true)
+                        new QuadraticBezierSegment(new Point(105, 170), new Point(160, 135), true)
                     }
                 },
                 new SolidColorBrush(Colors.LightGreen)
@@ -55,10 +80,10 @@ namespace MoodProgram.ViewModel
             (
                 new PathFigure
                 {
-                    StartPoint = new Point(60, 140),
+                    StartPoint = new Point(30, 140),
                     Segments = new PathSegmentCollection
                     {
-                        new QuadraticBezierSegment(new Point(135, 140), new Point(190, 140), true)
+                        new QuadraticBezierSegment(new Point(105, 140), new Point(160, 140), true)
                     }
                 },
                 new SolidColorBrush(Colors.LightYellow)
@@ -68,10 +93,10 @@ namespace MoodProgram.ViewModel
             (
                 new PathFigure
                 {
-                    StartPoint = new Point(60, 190),
+                    StartPoint = new Point(30, 190),
                     Segments = new PathSegmentCollection
                     {
-                        new QuadraticBezierSegment(new Point(135, 140), new Point(190, 190), true)
+                        new QuadraticBezierSegment(new Point(105, 140), new Point(160, 190), true)
                     }
                 },
                 new SolidColorBrush(Colors.IndianRed)
@@ -80,15 +105,16 @@ namespace MoodProgram.ViewModel
 
         public void UpdateExpression(double value)
         {
+            Value = value;
             if (value <= 0.5)
             {
                 double progress = value / 0.5;
-                CurrentMouth = InterpolateExpression(NeutralExpression, HappyExpression, progress);
+                CurrentMouth = InterpolateExpression(SadExpression, NeutralExpression, progress);
             }
             else
             {
                 double progress = (value - 0.5) / 0.5;
-                CurrentMouth = InterpolateExpression(NeutralExpression, SadExpression, progress);
+                CurrentMouth = InterpolateExpression(NeutralExpression, HappyExpression, progress);
             }
         }
 
