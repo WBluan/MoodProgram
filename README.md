@@ -1,5 +1,4 @@
-![Design sem nome](https://github.com/user-attachments/assets/62cdb3ed-c92b-4b16-96ab-de7cecf9fb95)
-
+![headerReadme](https://github.com/user-attachments/assets/52e69bec-9467-4922-a7ad-d7014c6d9736)
 
 # MoodProgram
 O MoodProgram é um projeto WPF que simula expressões faciais baseadas em um controle deslizante (Slider). O usuário pode ajustar o humor do rosto na tela entre três estados: Triste (Sad), Neutro (Neutral) e Feliz (Happy). O rosto muda gradualmente, proporcionando uma transição suave entre as diferentes expressões.
